@@ -1,0 +1,16 @@
+# ===== Frontend dev stack: Next.js =====
+# Theo kinh nghiệm dự án: BUILD vào image (KHÔNG bind-mount) để tránh stale /
+# hỏng native binary của Next/Turbopack trên mount Windows.
+# Sửa code FE → build lại:
+#   docker compose -f docker-compose.dev.yml up -d --build
+
+services:
+  frontend:
+    build: .
+    container_name: urlshortener-frontend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001}
+    ports:
+      - "3000:3000"

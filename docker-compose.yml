@@ -1,0 +1,14 @@
+# ===== Frontend stack (prod build): Next.js =====
+# Chạy (trong thư mục frontend/):  docker compose up -d --build
+# Compose tự đọc .env cùng thư mục để thay ${...}.
+
+services:
+  frontend:
+    build: .
+    container_name: urlshortener-frontend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001}
+    ports:
+      - "3000:3000"
