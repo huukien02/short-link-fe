@@ -1,0 +1,2 @@
+# Giữ thư mục public/ tồn tại trong git để Docker `COPY /app/public` không lỗi.
+# (Logo/favicon dùng file-convention app/icon.svg, nên public/ hiện không cần asset nào.)
