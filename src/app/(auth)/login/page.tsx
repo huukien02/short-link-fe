@@ -3,6 +3,7 @@
 import { API_URL } from '@/lib/api';
 import { Button } from '@/components/common/Button';
 import { ThemeToggle } from '@/components/common/ThemeToggle';
+import { Logo } from '@/components/common/Logo';
 import {
   Card,
   CardContent,
@@ -23,7 +24,8 @@ export default function LoginPage() {
       </div>
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>URL Shortener Pro</CardTitle>
+          <Logo className="mb-1" />
+          <CardTitle className="sr-only">URL Shortener Pro</CardTitle>
           <CardDescription>Đăng nhập để quản lý link của bạn</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-3">

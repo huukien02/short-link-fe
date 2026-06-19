@@ -8,6 +8,7 @@ import { CreateLinkForm } from '@/components/features/CreateLinkForm';
 import { LinksTable } from '@/components/features/LinksTable';
 import { UserMenu } from '@/components/features/UserMenu';
 import { ThemeToggle } from '@/components/common/ThemeToggle';
+import { Logo } from '@/components/common/Logo';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -33,7 +34,8 @@ export default function DashboardPage() {
   return (
     <div className="mx-auto w-full max-w-4xl flex-1 px-4 py-8">
       <header className="mb-6 flex items-center justify-between">
-        <h1 className="text-xl font-semibold">URL Shortener Pro</h1>
+        <Logo />
+        <h1 className="sr-only">URL Shortener Pro</h1>
         <div className="flex items-center gap-3">
           <ThemeToggle />
           <UserMenu />
