@@ -20,6 +20,7 @@ export interface Link {
   isActive: boolean;
   expiresAt: string | null;
   maxClicks: number | null;
+  hasPassword: boolean;
   createdAt: string;
 }
 
@@ -36,5 +37,13 @@ export interface CreateLinkInput {
   customSlug?: string;
   expiresAt?: string;
   maxClicks?: number;
+  password?: string;
+}
+
+export interface UpdateLinkInput {
+  targetUrl?: string;
+  expiresAt?: string | null;
+  maxClicks?: number | null;
+  isActive?: boolean;
   password?: string;
 }

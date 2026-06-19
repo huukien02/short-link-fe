@@ -1,9 +1,11 @@
 'use client';
 
-import { Copy, ExternalLink, Trash2 } from 'lucide-react';
+import { Copy, ExternalLink, Lock, Timer, Trash2 } from 'lucide-react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ApiError } from '@/lib/api';
 import { deleteLink, listLinks } from '@/lib/api/links';
+import { Link } from '@/lib/types';
+import { Badge } from '@/components/common/Badge';
 import { Button } from '@/components/common/Button';
 import {
   Card,
@@ -20,6 +22,32 @@ import {
   TableRow,
 } from '@/components/common/Table';
 import { toast } from '@/components/common/Toaster';
+import { QrDialog } from './QrDialog';
+
+function formatExpiry(iso: string): string {
+  const d = new Date(iso);
+  const expired = d.getTime() < Date.now();
+  return `${expired ? 'Hết hạn' : 'Hết hạn lúc'} ${d.toLocaleDateString('vi-VN')}`;
+}
+
+function LinkBadges({ link }: { link: Link }) {
+  const expired = link.expiresAt && new Date(link.expiresAt).getTime() < Date.now();
+  return (
+    <div className="flex flex-wrap gap-1">
+      {!link.isActive && <Badge variant="destructive">Tắt</Badge>}
+      {link.hasPassword && (
+        <Badge variant="secondary">
+          <Lock /> Mật khẩu
+        </Badge>
+      )}
+      {link.expiresAt && (
+        <Badge variant={expired ? 'destructive' : 'outline'}>
+          <Timer /> {formatExpiry(link.expiresAt)}
+        </Badge>
+      )}
+    </div>
+  );
+}
 
 export function LinksTable() {
   const queryClient = useQueryClient();
@@ -68,19 +96,33 @@ export function LinksTable() {
                 <TableHead>Short URL</TableHead>
                 <TableHead>URL đích</TableHead>
                 <TableHead className="text-right">Clicks</TableHead>
-                <TableHead className="w-32 text-right">Thao tác</TableHead>
+                <TableHead className="w-40 text-right">Thao tác</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {data.items.map((link) => (
                 <TableRow key={link.id}>
-                  <TableCell className="font-medium">/{link.slug}</TableCell>
+                  <TableCell>
+                    <div className="flex flex-col gap-1.5">
+                      <span className="font-medium">/{link.slug}</span>
+                      <LinkBadges link={link} />
+                    </div>
+                  </TableCell>
                   <TableCell className="max-w-xs truncate text-muted-foreground">
                     {link.targetUrl}
                   </TableCell>
-                  <TableCell className="text-right">{link.clickCount}</TableCell>
+                  <TableCell className="text-right tabular-nums">
+                    {link.clickCount}
+                    {link.maxClicks != null && (
+                      <span className="text-muted-foreground">
+                        {' / '}
+                        {link.maxClicks}
+                      </span>
+                    )}
+                  </TableCell>
                   <TableCell>
                     <div className="flex justify-end gap-1">
+                      <QrDialog link={link} />
                       <Button
                         variant="ghost"
                         size="icon-sm"
