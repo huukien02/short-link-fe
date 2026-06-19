@@ -32,6 +32,16 @@ export interface Paginated<T> {
   totalPages: number;
 }
 
+export interface AnalyticsResult {
+  slug: string;
+  from: string;
+  to: string;
+  total: number;
+  byDay: { date: string; count: number }[];
+  byCountry: { country: string; count: number }[];
+  byDevice: { device: string; count: number }[];
+}
+
 export interface CreateLinkInput {
   targetUrl: string;
   customSlug?: string;

@@ -1,6 +1,7 @@
 'use client';
 
-import { Copy, ExternalLink, Lock, Timer, Trash2 } from 'lucide-react';
+import { BarChart3, Copy, ExternalLink, Lock, Timer, Trash2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ApiError } from '@/lib/api';
 import { deleteLink, listLinks } from '@/lib/api/links';
@@ -51,6 +52,7 @@ function LinkBadges({ link }: { link: Link }) {
 
 export function LinksTable() {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['links'],
@@ -123,6 +125,14 @@ export function LinksTable() {
                   <TableCell>
                     <div className="flex justify-end gap-1">
                       <QrDialog link={link} />
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        onClick={() => router.push(`/analytics/${link.slug}`)}
+                        aria-label="Thống kê"
+                      >
+                        <BarChart3 />
+                      </Button>
                       <Button
                         variant="ghost"
                         size="icon-sm"
