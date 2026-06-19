@@ -2,9 +2,10 @@
 
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import { LogOut } from 'lucide-react';
+import { CreditCard, LogOut } from 'lucide-react';
 import { getMe, logout } from '@/lib/api/auth';
 import { Button } from '@/components/common/Button';
+import { Badge } from '@/components/common/Badge';
 
 export function UserMenu() {
   const router = useRouter();
@@ -41,8 +42,21 @@ export function UserMenu() {
               </span>
             )}
           </div>
+          <Badge variant={user.plan === 'free' ? 'secondary' : 'default'}>
+            {user.plan
+              ? user.plan[0].toUpperCase() + user.plan.slice(1)
+              : 'Free'}
+          </Badge>
         </div>
       )}
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => router.push('/billing')}
+      >
+        <CreditCard />
+        <span className="hidden sm:inline">Gói cước</span>
+      </Button>
       <Button variant="outline" size="sm" onClick={() => void onLogout()}>
         <LogOut />
         <span className="hidden sm:inline">Đăng xuất</span>

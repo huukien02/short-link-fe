@@ -3,6 +3,7 @@ export interface AuthUser {
   email: string;
   name: string | null;
   avatar: string | null;
+  plan: string; // 'free' | 'pro'
 }
 
 export interface AuthResponse {
